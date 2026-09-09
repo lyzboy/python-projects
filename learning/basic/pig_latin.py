@@ -16,4 +16,5 @@ def pig_latin_word(word):
     first_letter = word_list.pop(0)
     return "".join(word_list) + f"-{first_letter}ay"
 
-print(pig_latin("Well it looks like that works"))
+if __name__ == '__main__':
+    print(pig_latin("Well it looks like that works"))
