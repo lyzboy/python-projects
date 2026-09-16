@@ -2,6 +2,7 @@ import os
 import pathlib
 
 def list_files(path: str)->list | str:
+    """Function that lists all files and folders within a provided path"""
     try:
         parsed_path = pathlib.PurePath(path)
         local_path = pathlib.Path(parsed_path)
