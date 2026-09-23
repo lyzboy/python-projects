@@ -11,7 +11,8 @@ FOLDER_NAMES = {
     "Excels":[".csv"],
     "Web":[".html",".css",".js",".md",".json"],
     "PDF":[".pdf"],
-    "Documents":[".doc",".txt",".docx"]
+    "Documents":[".doc",".txt",".docx"],
+    "Logs":[".log"]
     }
 
 def list_files(path: str)-> str | None:
@@ -37,23 +38,27 @@ def place_files(path)->None:
     path = path.replace('"', '')
     list_files(path)
     root = pathlib.Path(path)
-    print("Checking organized folder structure...")
-    for name in FOLDER_NAMES.keys():
-        if not name in found_dirs:
-            print(f'There is not a {name} folder')
-            print(f'Creating {name} folder...')
-            p = pathlib.Path(root/name)
-            p.mkdir()
-            print('Folder created')
     print("Sorting files...")
     for file in found_files:
             file_extension = os.path.splitext(file)[-1].lower()
-            matching_folder = [key for key, value_list in FOLDER_NAMES.items() if file_extension in value_list]
+            matching_folder = [key for key, value_list in FOLDER_NAMES.items()
+             if file_extension in value_list]
+
+            # this checks if there is a folder for the extension based on the dictionary above and skips creation of so
             if not matching_folder:
                 continue
+
+            # check here if a folder exists for the file and if not create it.
+            if not matching_folder[0] in found_dirs:
+                print(f'There is not a {matching_folder[0]} folder')
+                print(f'Creating {matching_folder[0]} folder...')
+                p = pathlib.Path(root/matching_folder[0])
+                p.mkdir()
+                found_dirs.append(matching_folder[0])
+                print('Folder created')
             destination = pathlib.Path(root/matching_folder[0]/file)
             original_path = pathlib.Path(root/file)
-            print(f'Moving {original_path} to {destination}...')
+            print(f'Moving {original_path} to {destination}')
             os.replace(original_path, destination)
     print("*** Sorting Complete ***")
         
