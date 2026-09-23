@@ -1,42 +1,11 @@
 {
-    "Models": [
-        ".step",
-        ".sldprt",
-        ".stp",
-        ".stl"
-    ],
-    "Images": [
-        ".png",
-        ".jpeg",
-        ".jpg"
-    ],
-    "Zipped": [
-        ".zip"
-    ],
-    "Installs": [
-        ".exe",
-        ".msi",
-        ".iso"
-    ],
-    "Excels": [
-        ".csv"
-    ],
-    "Web": [
-        ".html",
-        ".css",
-        ".js",
-        ".md",
-        ".json"
-    ],
-    "PDF": [
-        ".pdf"
-    ],
-    "Documents": [
-        ".doc",
-        ".txt",
-        ".docx"
-    ],
-    "Logs": [
-        ".log"
-    ]
+  "Models": [".step", ".sldprt", ".stp", ".stl"],
+  "Images": [".png", ".jpeg", ".jpg"],
+  "Zipped": [".zip"],
+  "Installs": [".exe", ".msi", ".iso"],
+  "Excels": [".csv"],
+  "Web": [".html", ".css", ".js", ".md", ".json"],
+  "PDF": [".pdf"],
+  "Documents": [".doc", ".txt", ".docx"],
+  "Logs": [".log"]
 }
