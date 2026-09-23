@@ -1,8 +1,5 @@
-import os
 import pathlib
 
-found_dirs = []
-found_files = []
 FOLDER_NAMES = {
     "Models":[".step",".sldprt",".stp",".stl"], 
     "Images":[".png",".jpeg",".jpg"],
@@ -15,54 +12,33 @@ FOLDER_NAMES = {
     "Logs":[".log"]
     }
 
-def list_files(path: str)-> str | None:
-    """Add all files to constant lists"""
+
+def sort_files(root_path_string:str)->None:
     try:
-        print('Searching directory...')
-        parsed_path = pathlib.PurePath(path)
-        local_path = pathlib.Path(parsed_path)
-        resources = os.scandir(local_path);
-        for resource in resources:
-            if resource.is_file():
-                found_files.append(resource.name)
-            else:
-                found_dirs.append(resource.name)
-        return None
+        print("*** Starting Sort ***")
+        # clean path string
+        root_path_string = root_path_string.strip().strip('"').strip("'")
+        # create a path to the root
+        root_path = pathlib.Path(root_path_string)
+        # for each resource in the root path
+        for resource in root_path.iterdir():
+                # if the resource is a file
+                if resource.is_file():
+                    # find the folder in the predefined list that matches the extension
+                    matching_folder = [key for key, value_list in FOLDER_NAMES.items() if resource.suffix.lower() in value_list]
+                    # if there is a matching folder in the list for this file's extension
+                    if matching_folder:
+                        # create the path for where to move this file
+                        target_dir = root_path / matching_folder[0]
+                        # create the directory at that path
+                        target_dir.mkdir(parents=True, exist_ok=True)
+                        # create the path that the file will be moved to
+                        final_path = target_dir / resource.name
+                        # move the file to that path, overwrites existing files of same name
+                        resource.rename(final_path)
+        print("*** Sorting Complete ***")
     except FileNotFoundError:
-        return f"Files not found or bad path"
-
-
-# TODO: only create folders that will be needed for files.
-def place_files(path)->None:
-    """Moves files to organized folder locations"""
-    path = path.replace('"', '')
-    list_files(path)
-    root = pathlib.Path(path)
-    print("Sorting files...")
-    for file in found_files:
-            file_extension = os.path.splitext(file)[-1].lower()
-            matching_folder = [key for key, value_list in FOLDER_NAMES.items()
-             if file_extension in value_list]
-
-            # this checks if there is a folder for the extension based on the dictionary above and skips creation of so
-            if not matching_folder:
-                continue
-
-            # check here if a folder exists for the file and if not create it.
-            if not matching_folder[0] in found_dirs:
-                print(f'There is not a {matching_folder[0]} folder')
-                print(f'Creating {matching_folder[0]} folder...')
-                p = pathlib.Path(root/matching_folder[0])
-                p.mkdir()
-                found_dirs.append(matching_folder[0])
-                print('Folder created')
-            destination = pathlib.Path(root/matching_folder[0]/file)
-            original_path = pathlib.Path(root/file)
-            print(f'Moving {original_path} to {destination}')
-            os.replace(original_path, destination)
-    print("*** Sorting Complete ***")
-        
-    
+         print('The provided path is incorrect')
 
 path = input("What is the folder to organize?\n")
-place_files(path)
+sort_files(path)
