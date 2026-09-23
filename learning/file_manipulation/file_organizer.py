@@ -42,9 +42,10 @@ def save_config(config:dict)-> None:
     print("Library save complete!")
 
 
-def sort_files(root_path_string:str)->None:
+def sort_files(root_path_string:str, folder_names: dict = None)->None:
     try:
-        folder_names = load_config()
+        if folder_names is None:
+             folder_names = DEFAULT_CONFIG
         print("*** Starting Sort ***")
         # clean path string
         root_path_string = root_path_string.strip().strip('"').strip("'")
@@ -70,5 +71,6 @@ def sort_files(root_path_string:str)->None:
     except FileNotFoundError:
          print('The provided path is incorrect')
 
-path = input("What is the folder to organize?\n")
-sort_files(path)
+if __name__ == "__main__":
+    path = input("What is the folder to organize?\n")
+    sort_files(path)
