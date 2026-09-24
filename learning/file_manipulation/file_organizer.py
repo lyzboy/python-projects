@@ -68,8 +68,8 @@ def sort_files(root_path_string:str, folder_names: dict = None)->None:
                         # move the file to that path, overwrites existing files of same name
                         resource.rename(final_path)
         print("*** Sorting Complete ***")
-    except FileNotFoundError:
-         print('The provided path is incorrect')
+    except FileNotFoundError as e:
+         print(f'The provided path is incorrect: {e}')
 
 if __name__ == "__main__":
     path = input("What is the folder to organize?\n")
